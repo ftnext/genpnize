@@ -1,6 +1,6 @@
 import argparse
 
-from more_itertools import chunked
+from genpnize.producer import GenP
 
 __version__ = "0.0.1"
 
@@ -9,8 +9,8 @@ def main():
     args = parse_args()
 
     input_text = args.input.read()
-    for chunk in chunked(input_text.replace("\n", ""), 13):
-        print("".join(chunk))
+    for line in GenP().write_lines(input_text):
+        print(line)
 
 
 def parse_args() -> argparse.Namespace:
