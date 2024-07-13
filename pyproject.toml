@@ -26,6 +26,9 @@ dynamic = ["version"]
 [project.urls]
 Repository = "https://github.com/ftnext/genpnize"
 
+[project.scripts]
+genpnize = "genpnize:main"
+
 [project.optional-dependencies]
 dev = [
     "taskipy",
