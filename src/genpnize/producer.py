@@ -14,5 +14,18 @@ class Producer(Protocol):
 
 
 class GenP:
+    letter_count = 13
+    conversion = {"!": "!", "?": "?", "！": "!", "？": "?"}
+
     def write_lines(self, text: str) -> Generator[str, None, None]:
-        yield from chop_text(text.replace("\n", ""), 13)
+        iterator = chop_text(text.replace("\n", ""), self.letter_count)
+        current_line = next(iterator)
+        while next_line := next(iterator, ""):
+            if next_line in self.conversion:  # next_line is a last line
+                yield current_line + self.conversion[next_line]
+                break
+            else:
+                yield current_line
+                current_line = next_line
+        if next_line == "":  # returns "" instead of StopIteration
+            yield current_line
