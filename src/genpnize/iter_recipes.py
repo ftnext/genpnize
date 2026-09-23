@@ -10,18 +10,18 @@ T = TypeVar("T")
 @overload
 def grouper(
     iterable: Iterable[T], n: int, fillvalue: T
-) -> Generator[tuple[T], None, None]: ...
+) -> Generator[tuple[T]]: ...
 
 
 @overload
 def grouper(
     iterable: Iterable[T], n: int, fillvalue: None = None
-) -> Generator[tuple[T | None], None, None]: ...
+) -> Generator[tuple[T | None]]: ...
 
 
 def grouper(
     iterable: Iterable[T], n: int, fillvalue: T | None = None
-) -> Generator[tuple[T | None], None, None]:
+) -> Generator[tuple[T | None]]:
     """Based on `grouper` in `the itertools recipes section <https://docs.python.org/3/library/itertools.html#itertools-recipes>`__.
 
     >>> list(grouper("ABCDEFG", 3))
