@@ -1,4 +1,9 @@
-pub fn chop_text(text: &str, n: usize) -> Vec<String> {
+pub fn genpnize(text: &str) -> String {
+    let lines = chop_text(text, 13);
+    lines.join("\n")
+}
+
+fn chop_text(text: &str, n: usize) -> Vec<String> {
     let characters: Vec<char> = text.chars().collect();
     let mut lines: Vec<String> = characters
         .chunks(n)
