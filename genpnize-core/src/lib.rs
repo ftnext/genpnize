@@ -1,9 +1,21 @@
 pub fn chop_text(text: &str, n: usize) -> Vec<String> {
     let characters: Vec<char> = text.chars().collect();
-    characters
+    let mut lines: Vec<String> = characters
         .chunks(n)
         .map(|chunk| chunk.iter().collect::<String>())
-        .collect()
+        .collect();
+    if lines.len() >= 2 {
+        let punctuation = match lines.last().unwrap().as_str() {
+            "?" | "？" => Some('?'),
+            "!" | "！" => Some('!'),
+            _ => None,
+        };
+        if let Some(mark) = punctuation {
+            lines.pop();
+            lines.last_mut().unwrap().push(mark);
+        }
+    }
+    lines
 }
 
 #[cfg(test)]
@@ -17,5 +29,11 @@ mod tests {
             chop_text(text, 13),
             vec!["あいうえおかきくけこさしす", "せそ"]
         );
+    }
+
+    #[test]
+    fn test_should_include_trailing_punctuation() {
+        let text = "あいうえおかきくけこさしす？";
+        assert_eq!(chop_text(text, 13), vec!["あいうえおかきくけこさしす?"]);
     }
 }
