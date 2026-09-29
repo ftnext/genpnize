@@ -7,4 +7,3 @@ edition.workspace = true
 name = "genpnize_core"
 
 [dependencies]
-clap = { version = "4", features = ["derive"] }
