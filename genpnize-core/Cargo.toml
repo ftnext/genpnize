@@ -1,0 +1,9 @@
+[package]
+name = "genpnize-core"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+name = "genpnize_core"
+
+[dependencies]
