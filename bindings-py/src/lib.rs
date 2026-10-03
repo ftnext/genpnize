@@ -1,24 +1,25 @@
 use clap::Parser;
+use clap_stdin::FileOrStdin;
+use pyo3::exceptions::PyRuntimeError;
 use pyo3::prelude::*;
-use std::io::Read;
 
 #[derive(Parser)]
 struct Cli {
-    input: String,
+    input: FileOrStdin,
 }
 
 #[pyfunction]
 fn main(py: Python<'_>) -> PyResult<()> {
     let argv: Vec<String> = py.import("sys")?.getattr("argv")?.extract()?;
     let args = Cli::parse_from(argv);
-    let input = if args.input == "-" {
-        let mut buf = String::new();
-        std::io::stdin().read_to_string(&mut buf)?;
-        buf
-    } else {
-        args.input
-    };
-    println!("{}", genpnize_core::genpnize(input.trim_end()));
+    let input = args
+        .input
+        .contents()
+        .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
+    println!(
+        "{}",
+        genpnize_core::genpnize(&input.replace(['\r', '\n'], ""))
+    );
     Ok(())
 }
 
