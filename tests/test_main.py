@@ -7,10 +7,10 @@ from unittest.mock import patch
 from genpnize import main
 
 
-def test_genpnize_from_text(capfd):
+def test_genpnize_from_file_path(capfd):
     resource_dir_path = Path(__file__).parent / "resources"
     input_path = resource_dir_path / "file" / "input.txt"
-    with patch("sys.argv", ["genpnize", input_path.read_text(encoding="utf-8").replace("\n", "")]):
+    with patch("sys.argv", ["genpnize", str(input_path)]):
         main()
 
     expected = (resource_dir_path / "file" / "expected.txt").read_text(encoding="utf-8")
@@ -32,5 +32,7 @@ def test_genpnize_from_stdin():
         capture_output=True,
     )
 
-    expected = (resource_dir_path / "stdin" / "expected.txt").read_text(encoding="utf-8")
+    expected = (resource_dir_path / "stdin" / "expected.txt").read_text(
+        encoding="utf-8"
+    )
     assert genpnize_process.stdout == expected
